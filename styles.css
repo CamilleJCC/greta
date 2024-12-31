@@ -204,6 +204,7 @@ p {
 
     .artwork-frame {
         max-width: 89vh;
+            position: relative;
     }
 
     .reveal-btn {
