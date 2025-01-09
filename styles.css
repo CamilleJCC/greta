@@ -110,6 +110,9 @@ p {
     cursor: pointer;
     transition: transform 0.3s ease;
 }
+.reveal-btn:hover{
+background: #c4e0ff;
+}
 
 .revealed-answer {
     margin-bottom: 0;
@@ -176,9 +179,9 @@ p {
 @media (min-width: 768px) {
     .investigation-container {
         grid-template-columns: 1fr 1fr;
-        padding: clamp(2rem, 6vw, 5rem);
+        padding: 0rem 4rem;
         align-items: center;
-        gap: 4rem;
+        gap: 2rem;
     }
 
     .left-col {
@@ -195,7 +198,7 @@ p {
 
 @media (min-width: 1200px) {
     .investigation-container {
-        gap: 6rem;
+        gap: 4rem;
     }
     
     .artwork-frame {
