@@ -1,6 +1,7 @@
 import { db } from './firebase-config.js';
 import { ref, set, push } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js';
 
+
 // Test connection outside DOMContentLoaded
 const testRef = ref(db, 'connection-test');
 set(testRef, {
