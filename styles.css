@@ -130,7 +130,7 @@ p {
 }
 
 .reveal-btn {
-    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+    background: #87bafa;
     border: none;
     padding: 0.9375rem 1.875rem;
     border-radius: 1.5625rem;
