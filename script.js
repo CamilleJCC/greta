@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const revealBtn = document.querySelector('.reveal-btn');
     const input = document.querySelector('.magic-input');
     const answersContainer = document.querySelector('.answers-container');
+    const overlay = document.getElementById('overlay');
+    const closeButtons = document.querySelectorAll('.close-btn');
+    const tooltipText = document.querySelector('.tooltip-text');
+    const plusPopup = document.getElementById('tooltipText');
 
     function updateZoom(e) {
         const rect = artwork.getBoundingClientRect();
@@ -39,69 +43,74 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    artwork.addEventListener('mousemove', updateZoom);
-    artwork.addEventListener('mouseleave', () => {
-        magnifier.style.display = 'none';
-    });
-
     function createSparkles(element) {
         const rect = element.getBoundingClientRect();
-        
         for (let i = 0; i < 30; i++) {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
-            
             const x = Math.random() * rect.width;
             const y = Math.random() * rect.height;
-            
             sparkle.style.left = x + 'px';
             sparkle.style.top = y + 'px';
             sparkle.style.backgroundColor = `hsl(${Math.random() * 360}, 50%, 50%)`;
-            
             element.appendChild(sparkle);
-            
             setTimeout(() => sparkle.remove(), 1500);
         }
     }
 
     function getRandomColor() {
-        const colors = [
-            '#b5f0de',
-            '#fab8a1',
-            '#faf7ba',
-            '#c2b2ff'
-        ];
+        const colors = ['#b5f0de', '#fab8a1', '#faf7ba', '#c2b2ff'];
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
- async function handleReveal() {
-    if (input.value.trim()) {
-        try {
-            // Save to Firebase under 'greta-answers' node
-            const answersRef = ref(db, 'greta-answers');
-            const newAnswerRef = push(answersRef);
-            
-            await set(newAnswerRef, {
-                answer: input.value,
-                timestamp: new Date().toISOString()
-            });
+    async function handleReveal() {
+        if (input.value.trim()) {
+            try {
+                const answersRef = ref(db, 'amigas-answers');
+                const newAnswerRef = push(answersRef);
+                const dataToSave = {
+                    answer: input.value,
+                    timestamp: new Date().toISOString()
+                };
+                await set(newAnswerRef, dataToSave);
 
-            // Create visual element
-            const newAnswer = document.createElement('div');
-            newAnswer.className = 'revealed-answer reveal-animation';
-            newAnswer.textContent = input.value;
-            newAnswer.style.position = 'relative';
-            newAnswer.style.background = getRandomColor();
-            
-            answersContainer.appendChild(newAnswer);
-            createSparkles(newAnswer);
-            input.value = '';
-        } catch (error) {
-            console.log('Error saving answer:', error);
+                const newAnswer = document.createElement('div');
+                newAnswer.className = 'revealed-answer reveal-animation';
+                newAnswer.textContent = input.value;
+                newAnswer.style.position = 'relative';
+                newAnswer.style.background = getRandomColor();
+                
+                answersContainer.appendChild(newAnswer);
+                createSparkles(newAnswer);
+                input.value = '';
+            } catch (error) {
+                console.log('Error:', error.message);
+            }
         }
     }
-}
 
+    // Event Listeners
+    artwork.addEventListener('mousemove', updateZoom);
+    artwork.addEventListener('mouseleave', () => {
+        magnifier.style.display = 'none';
+    });
+
+    
+    plusBtn.addEventListener('click', () => {
+        if (tooltipText.style.visibility === 'visible') {
+            tooltipText.style.visibility = 'hidden';
+            tooltipText.style.display = 'none';
+        } else {
+            tooltipText.style.visibility = 'visible';
+            tooltipText.style.display = 'block';
+        }
+    });
+
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            overlay.style.display = 'none';
+        });
+    });
 
     revealBtn.addEventListener('click', handleReveal);
     
