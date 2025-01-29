@@ -468,6 +468,11 @@ font-size: 1.3rem;
      width: 92%;
     padding: 30px 22px;
     }
+
+    p {
+        padding-right: 0px;
+    }
+    
     .investigation-container{
         width: 100vw;
         padding-bottom: 132px;
